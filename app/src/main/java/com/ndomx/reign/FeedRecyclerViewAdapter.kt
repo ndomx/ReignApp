@@ -24,18 +24,18 @@ class FeedRecyclerViewAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = values[position]
-        holder.idView.text = item.id
-        holder.contentView.text = item.content
+        holder.articleTitle.text = item.content
+        holder.articleInfo.text = item.details
     }
 
     override fun getItemCount(): Int = values.size
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val idView: TextView = view.findViewById(R.id.feed_article_title)
-        val contentView: TextView = view.findViewById(R.id.feed_article_info)
+        val articleTitle: TextView = view.findViewById(R.id.feed_article_title)
+        val articleInfo: TextView = view.findViewById(R.id.feed_article_info)
 
         override fun toString(): String {
-            return super.toString() + " '" + contentView.text + "'"
+            return super.toString() + " '" + articleInfo.text + "'"
         }
     }
 }
