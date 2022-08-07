@@ -1,18 +1,15 @@
 package com.ndomx.reign
 
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import com.ndomx.reign.dummy.DummyContent
+import com.ndomx.reign.db.FeedDatabase
 
-/**
- * A fragment representing a list of Items.
- */
 class FeedFragment : Fragment() {
 
     private var columnCount = 1
@@ -37,9 +34,16 @@ class FeedFragment : Fragment() {
                     columnCount <= 1 -> LinearLayoutManager(context)
                     else -> GridLayoutManager(context, columnCount)
                 }
-                adapter = FeedRecyclerViewAdapter(DummyContent.ITEMS)
+                adapter = FeedRecyclerViewAdapter()
+
+                val db = FeedDatabase.db(context)
+                db.getAllPosts { posts ->
+                    val feedAdapter = adapter as FeedRecyclerViewAdapter
+                    feedAdapter.addPosts(*posts.toTypedArray())
+                }
             }
         }
+
         return view
     }
 
