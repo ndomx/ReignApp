@@ -5,7 +5,6 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
@@ -16,9 +15,13 @@ abstract class FeedDatabase : RoomDatabase() {
         private var INSTANCE: FeedDatabase? = null
 
         fun db(context: Context): FeedDatabase {
-            return INSTANCE ?: Room.inMemoryDatabaseBuilder(
-                context, FeedDatabase::class.java
-            ).build()
+            return INSTANCE ?: synchronized(this) {
+                INSTANCE = Room.inMemoryDatabaseBuilder(
+                    context, FeedDatabase::class.java
+                ).build()
+
+                return INSTANCE!!
+            }
             /*
             return INSTANCE ?: Room.databaseBuilder(
                 context, FeedDatabase::class.java, "reign-app.db"
