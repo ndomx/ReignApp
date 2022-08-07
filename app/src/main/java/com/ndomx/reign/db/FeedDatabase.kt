@@ -38,7 +38,6 @@ abstract class FeedDatabase : RoomDatabase() {
     fun insertPost(vararg posts: Post, callback: () -> Unit) = runBlocking {
         launch {
             postDao().insertAll(*posts)
-            delay(5000)
             callback()
         }
     }
