@@ -9,10 +9,13 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ndomx.reign.db.FeedDatabase
+import com.ndomx.reign.dummy.generateRandomPosts
 
 class FeedFragment : Fragment() {
 
     private var columnCount = 1
+
+    private val feedAdapter = FeedRecyclerViewAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,17 +37,23 @@ class FeedFragment : Fragment() {
                     columnCount <= 1 -> LinearLayoutManager(context)
                     else -> GridLayoutManager(context, columnCount)
                 }
-                adapter = FeedRecyclerViewAdapter()
+                adapter = feedAdapter
 
                 val db = FeedDatabase.db(context)
                 db.getAllPosts { posts ->
-                    val feedAdapter = adapter as FeedRecyclerViewAdapter
                     feedAdapter.addPosts(*posts.toTypedArray())
                 }
             }
         }
 
         return view
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        val posts = generateRandomPosts(50)
+        feedAdapter.addPosts(*posts.toTypedArray())
     }
 
     companion object {

@@ -7,8 +7,6 @@ import android.view.ViewGroup
 import android.widget.TextView
 import com.ndomx.reign.db.Post
 
-import com.ndomx.reign.dummy.DummyContent.DummyItem
-
 class FeedRecyclerViewAdapter : RecyclerView.Adapter<FeedRecyclerViewAdapter.ViewHolder>() {
     private val entries = mutableListOf<Post>()
 
