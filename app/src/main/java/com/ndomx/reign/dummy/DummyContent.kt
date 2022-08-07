@@ -1,52 +1,31 @@
 package com.ndomx.reign.dummy
 
-import java.util.ArrayList
-import java.util.HashMap
+import java.util.*
 
-/**
- * Helper class for providing sample content for user interfaces created by
- * Android template wizards.
- *
- * TODO: Replace all uses of this class before publishing your app.
- */
 object DummyContent {
+    internal val authors = arrayOf(
+        "ndomx", "frodo", "random_user123", "voldemort", "zelda",
+        "reign_manager", "aka_theking", "thor", "zeus", "iron_man",
+        "isaac_newton", "eistein", "frozono", "buzz_lightyear", "ness"
+    )
 
-    /**
-     * An array of sample (dummy) items.
-     */
-    val ITEMS: MutableList<DummyItem> = ArrayList()
+    internal val titles = arrayOf(
+        "How to win the lottery twice",
+        "You won't believe what happens if you mix these common household ingredients",
+        "Single people in your area... Truth or scam?",
+        "Do you still fully charge your phone?",
+        "Dolphins have a more complete language than english, study finds",
+        "10 reasons why you should buy bitcoins (and 10 reasons why you shouldn't)",
+        "Meet borophene, the material that will outdate graphene",
+        "Watch these astonishing photos captured by Nasa's JWSP",
+        "Looking for jobs aboard? Follow these 7 steps",
+        "Best bucket laptops for 2022"
+    )
 
-    /**
-     * A map of sample (dummy) items, by ID.
-     */
-    val ITEM_MAP: MutableMap<String, DummyItem> = HashMap()
-
-    private val COUNT = 25
-
-    init {
-        // Add some sample items.
-        for (i in 1..COUNT) {
-            addItem(createDummyItem(i))
-        }
+    internal val oldestPost = Calendar.getInstance().let { calendar ->
+        calendar.set(2021, 12, 28)
+        calendar.timeInMillis
     }
 
-    private fun addItem(item: DummyItem) {
-        ITEMS.add(item)
-        ITEM_MAP[item.id] = item
-    }
-
-    private fun createDummyItem(position: Int): DummyItem {
-        return DummyItem(position.toString(), "Item $position", makeDetails(position))
-    }
-
-    private fun makeDetails(position: Int): String {
-        return "Author - 2d ago"
-    }
-
-    /**
-     * A dummy item representing a piece of content.
-     */
-    data class DummyItem(val id: String, val content: String, val details: String) {
-        override fun toString(): String = content
-    }
+    internal val newestPost = Calendar.getInstance().timeInMillis
 }
