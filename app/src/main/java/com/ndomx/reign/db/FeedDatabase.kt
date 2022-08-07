@@ -5,6 +5,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
@@ -31,6 +32,14 @@ abstract class FeedDatabase : RoomDatabase() {
     fun getAllPosts(callback: (posts: List<Post>) -> Unit) = runBlocking {
         launch {
             callback(postDao().getAll())
+        }
+    }
+
+    fun insertPost(vararg posts: Post, callback: () -> Unit) = runBlocking {
+        launch {
+            postDao().insertAll(*posts)
+            delay(5000)
+            callback()
         }
     }
 }

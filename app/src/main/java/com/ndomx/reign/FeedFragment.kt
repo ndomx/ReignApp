@@ -52,8 +52,13 @@ class FeedFragment : Fragment() {
     override fun onResume() {
         super.onResume()
 
+        val db = context?.let { FeedDatabase.db(it) } ?: return
         val posts = generateRandomPosts(50)
-        feedAdapter.addPosts(*posts.toTypedArray())
+        db.insertPost(*posts.toTypedArray()) {
+            db.getAllPosts {
+                feedAdapter.addPosts(*it.toTypedArray())
+            }
+        }
     }
 
     companion object {
