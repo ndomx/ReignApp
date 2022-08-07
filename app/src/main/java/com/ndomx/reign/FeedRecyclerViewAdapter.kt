@@ -1,14 +1,16 @@
 package com.ndomx.reign
 
-import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
 import com.ndomx.reign.db.Post
 
-class FeedRecyclerViewAdapter : RecyclerView.Adapter<FeedRecyclerViewAdapter.ViewHolder>() {
+class FeedRecyclerViewAdapter() : RecyclerView.Adapter<FeedRecyclerViewAdapter.ViewHolder>() {
     private val entries = mutableListOf<Post>()
+    private var listener: IPostListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -27,6 +29,10 @@ class FeedRecyclerViewAdapter : RecyclerView.Adapter<FeedRecyclerViewAdapter.Vie
 
     override fun getItemCount(): Int = entries.size
 
+    fun attachListener(postListener: IPostListener) {
+        listener = postListener
+    }
+
     fun addPosts(vararg posts: Post) {
         val oldCount = entries.size
         entries.addAll(posts)
@@ -36,6 +42,13 @@ class FeedRecyclerViewAdapter : RecyclerView.Adapter<FeedRecyclerViewAdapter.Vie
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val articleTitle: TextView = view.findViewById(R.id.feed_article_title)
         val articleInfo: TextView = view.findViewById(R.id.feed_article_info)
+        private val articleContainer: LinearLayout = view.findViewById(R.id.feed_article_container)
+
+        init {
+            articleContainer.setOnClickListener {
+                listener?.onPostClick(entries[bindingAdapterPosition])
+            }
+        }
 
         override fun toString(): String {
             return super.toString() + " '" + articleInfo.text + "'"

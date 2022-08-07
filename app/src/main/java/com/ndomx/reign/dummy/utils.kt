@@ -15,6 +15,6 @@ fun generateRandomPosts(size: Int): List<Post> = List(size) { i ->
         author = Random.choose(DummyContent.authors),
         createDate = Date(Random.nextLong(DummyContent.oldestPost, DummyContent.newestPost)),
         title = Random.choose(DummyContent.titles),
-        url = "127.0.0.1"
+        url = "https://www.google.cl"
     )
 }
