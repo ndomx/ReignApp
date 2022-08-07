@@ -25,7 +25,7 @@ class FeedFragment() : Fragment() {
         if (view is SwipeRefreshLayout) {
             refreshLayout = view
             view.setOnRefreshListener {
-                Log.i("FeedFragment", "onRefresh called")
+                onRefresh()
             }
 
             val recyclerView = view.findViewById<RecyclerView>(R.id.feed_recycler_view)
@@ -41,7 +41,7 @@ class FeedFragment() : Fragment() {
         super.onResume()
 
         val db = context?.let { FeedDatabase.db(it) } ?: return
-        val posts = generateRandomPosts(50)
+        val posts = generateRandomPosts(5)
         db.insertPost(*posts.toTypedArray()) {
             db.getAllPosts {
                 feedAdapter.addPosts(*it.toTypedArray())
@@ -61,6 +61,16 @@ class FeedFragment() : Fragment() {
             val db = FeedDatabase.db(context)
             db.getAllPosts { posts ->
                 feedAdapter.addPosts(*posts.toTypedArray())
+            }
+        }
+    }
+
+    private fun onRefresh() {
+        Log.i("FeedFragment", "onRefresh called")
+        context?.let {
+            Repository.getInstance(it).downloadData { posts ->
+                feedAdapter.addPosts(*posts.toTypedArray())
+                refreshLayout?.isRefreshing = false
             }
         }
     }
