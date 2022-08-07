@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.ndomx.reign.db.FeedDatabase
-import com.ndomx.reign.dummy.generateRandomPosts
 
 class FeedFragment() : Fragment() {
     private val feedAdapter = FeedRecyclerViewAdapter()
@@ -41,11 +40,8 @@ class FeedFragment() : Fragment() {
         super.onResume()
 
         val db = context?.let { FeedDatabase.db(it) } ?: return
-        val posts = generateRandomPosts(5)
-        db.insertPost(*posts.toTypedArray()) {
-            db.getAllPosts {
-                feedAdapter.addPosts(*it.toTypedArray())
-            }
+        db.getAllPosts {
+            feedAdapter.addPosts(*it.toTypedArray())
         }
     }
 
