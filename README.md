@@ -13,4 +13,5 @@ Alternatively, you can use the command `Ctrl+Alt+Shift+S` in Windows
 3. Inside this menu, there should be 2 fields, one for the SDK location and the other for the
 NDK location. This project does not make use of the Android NDK, so you will only need to locate
 the Android SDK in the topmost field
-4. After locating the Android SDK, click _Ok_ and build the project. You should be ready to go
+4. After locating the Android SDK, click _Ok_ and build the project. The IDE should then create a `local.properties` file
+containing the SDK path, and you should be ready to go
