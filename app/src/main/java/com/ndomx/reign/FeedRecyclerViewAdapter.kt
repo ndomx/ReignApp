@@ -21,7 +21,8 @@ class FeedRecyclerViewAdapter() : RecyclerView.Adapter<FeedRecyclerViewAdapter.V
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = entries[position]
 
-        val infoText = "${item.author} - ${item.createDate}"
+        val dateFormatted = formatDate(item.createDate)
+        val infoText = "${item.author} - $dateFormatted"
 
         holder.articleTitle.text = item.title
         holder.articleInfo.text = infoText
