@@ -16,8 +16,11 @@ import com.google.android.material.snackbar.Snackbar
 import com.ndomx.reign.db.FeedDatabase
 import com.ndomx.reign.db.Post
 
-class FeedFragment() : Fragment(), IPostListener {
-    private val feedAdapter = FeedRecyclerViewAdapter()
+class FeedFragment() : Fragment() {
+    private val feedAdapter = FeedRecyclerViewAdapter { post ->
+        expandPost(post)
+    }
+
     private var refreshLayout: SwipeRefreshLayout? = null
 
     override fun onCreateView(
@@ -40,14 +43,7 @@ class FeedFragment() : Fragment(), IPostListener {
         return view
     }
 
-    override fun onResume() {
-        super.onResume()
-
-        // TODO: add listener in constructor
-        feedAdapter.attachListener(this)
-    }
-
-    override fun expandPost(post: Post) {
+    private fun expandPost(post: Post) {
         findNavController().navigate(
             R.id.action_feedFragment_to_postFragment,
             bundleOf(PostFragment.ARG_URL to post.url)

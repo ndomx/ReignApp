@@ -8,9 +8,10 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.ndomx.reign.db.Post
 
-class FeedRecyclerViewAdapter() : RecyclerView.Adapter<FeedRecyclerViewAdapter.ViewHolder>() {
+class FeedRecyclerViewAdapter(
+    private val onPostClick: (Post) -> Unit
+) : RecyclerView.Adapter<FeedRecyclerViewAdapter.ViewHolder>() {
     private val entries = mutableListOf<Post>()
-    private var listener: IPostListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -29,10 +30,6 @@ class FeedRecyclerViewAdapter() : RecyclerView.Adapter<FeedRecyclerViewAdapter.V
     }
 
     override fun getItemCount(): Int = entries.size
-
-    fun attachListener(postListener: IPostListener) {
-        listener = postListener
-    }
 
     fun addPosts(vararg posts: Post) {
         entries.clear()
@@ -57,7 +54,7 @@ class FeedRecyclerViewAdapter() : RecyclerView.Adapter<FeedRecyclerViewAdapter.V
 
         init {
             articleContainer.setOnClickListener {
-                listener?.expandPost(entries[bindingAdapterPosition])
+                onPostClick(entries[bindingAdapterPosition])
             }
         }
 
