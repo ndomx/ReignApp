@@ -8,7 +8,7 @@ import androidx.room.TypeConverters
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
-@Database(entities = [Post::class], version = 1, exportSchema = false)
+@Database(entities = [Post::class, DeletedPost::class], version = 1, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class FeedDatabase : RoomDatabase() {
     companion object {
@@ -31,6 +31,7 @@ abstract class FeedDatabase : RoomDatabase() {
     }
 
     abstract fun postDao(): PostDao
+    abstract fun deletedDao(): DeletedPostDao
 
     fun getAllPosts(callback: (posts: List<Post>) -> Unit) = runBlocking {
         launch {
@@ -40,8 +41,20 @@ abstract class FeedDatabase : RoomDatabase() {
 
     fun insertPost(vararg posts: Post, callback: () -> Unit) = runBlocking {
         launch {
-            postDao().insertAll(*posts)
+            val deletedPosts = deletedDao().getDeletedPosts()
+            val filtered = posts.filter { post ->
+                post.id !in deletedPosts
+            }
+
+            postDao().insertAll(*filtered.toTypedArray())
             callback()
+        }
+    }
+
+    fun markPostAsDeleted(post: Post) = runBlocking {
+        launch {
+            deletedDao().markAsDeleted(DeletedPost(0, post.id))
+            postDao().deletePost(post)
         }
     }
 }
