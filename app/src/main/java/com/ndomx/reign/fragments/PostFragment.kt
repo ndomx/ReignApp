@@ -1,4 +1,4 @@
-package com.ndomx.reign
+package com.ndomx.reign.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.webkit.WebView
 import androidx.fragment.app.Fragment
+import com.ndomx.reign.R
 
 class PostFragment : Fragment() {
     companion object {

@@ -1,4 +1,4 @@
-package com.ndomx.reign
+package com.ndomx.reign.fragments
 
 import android.os.Bundle
 import android.util.Log
@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.snackbar.Snackbar
+import com.ndomx.reign.*
 import com.ndomx.reign.db.FeedDatabase
 import com.ndomx.reign.db.Post
 

@@ -6,7 +6,7 @@
     app:startDestination="@id/feedFragment">
     <fragment
         android:id="@+id/feedFragment"
-        android:name="com.ndomx.reign.FeedFragment"
+        android:name="com.ndomx.reign.fragments.FeedFragment"
         android:label="Feed"
         tools:layout="@layout/fragment_feed_list" >
         <action
@@ -15,7 +15,7 @@
     </fragment>
     <fragment
         android:id="@+id/postFragment"
-        android:name="com.ndomx.reign.PostFragment"
+        android:name="com.ndomx.reign.fragments.PostFragment"
         android:label="Post"
         tools:layout="@layout/fragment_post" >
     </fragment>
