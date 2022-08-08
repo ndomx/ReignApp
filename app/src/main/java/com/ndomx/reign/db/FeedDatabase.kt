@@ -16,17 +16,12 @@ abstract class FeedDatabase : RoomDatabase() {
 
         fun db(context: Context): FeedDatabase {
             return INSTANCE ?: synchronized(this) {
-                INSTANCE = Room.inMemoryDatabaseBuilder(
-                    context, FeedDatabase::class.java
+                INSTANCE = Room.databaseBuilder(
+                    context, FeedDatabase::class.java, "reign.db"
                 ).build()
 
                 return INSTANCE!!
             }
-            /*
-            return INSTANCE ?: Room.databaseBuilder(
-                context, FeedDatabase::class.java, "reign-app.db"
-            ).build()
-            */
         }
     }
 
