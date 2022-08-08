@@ -1,34 +1,30 @@
 package com.ndomx.reign
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Toast
-import androidx.fragment.app.Fragment
-import com.ndomx.reign.db.Post
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.setupActionBarWithNavController
 
-class MainActivity : AppCompatActivity(), IPostListener {
+class MainActivity : AppCompatActivity() {
+    private lateinit var navController: NavController
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val feedFragment = FeedFragment.newInstance()
-        feedFragment.attachListener(this)
-        loadFragment(feedFragment)
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        navController = navHostFragment.findNavController()
+
+        val toolbar = findViewById<Toolbar>(R.id.toolbar)
+        setSupportActionBar(toolbar)
+        setupActionBarWithNavController(navController)
     }
 
-    override fun onPostClick(post: Post) {
-        showToast("Loading ${post.title}")
-        val postFragment = PostFragment.newInstance(post.url)
-        loadFragment(postFragment)
-    }
-
-    private fun loadFragment(fragment: Fragment) {
-        val transaction = supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.main_fragment, fragment)
-        transaction.commit()
-    }
-
-    private fun showToast(message: String) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    override fun onSupportNavigateUp(): Boolean {
+        return (navController.navigateUp() || super.onSupportNavigateUp())
     }
 }

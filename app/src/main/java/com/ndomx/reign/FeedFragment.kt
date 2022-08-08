@@ -5,15 +5,17 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.ndomx.reign.db.FeedDatabase
+import com.ndomx.reign.db.Post
 
-class FeedFragment() : Fragment() {
+class FeedFragment() : Fragment(), IPostListener {
     private val feedAdapter = FeedRecyclerViewAdapter()
-
     private var refreshLayout: SwipeRefreshLayout? = null
 
     override fun onCreateView(
@@ -39,14 +41,20 @@ class FeedFragment() : Fragment() {
     override fun onResume() {
         super.onResume()
 
+        // TODO: add listener in constructor
+        feedAdapter.attachListener(this)
+
         val db = context?.let { FeedDatabase.db(it) } ?: return
         db.getAllPosts {
             feedAdapter.addPosts(*it.toTypedArray())
         }
     }
 
-    fun attachListener(listener: IPostListener) {
-        feedAdapter.attachListener(listener)
+    override fun onPostClick(post: Post) {
+        findNavController().navigate(
+            R.id.action_feedFragment_to_postFragment,
+            bundleOf(PostFragment.ARG_URL to post.url)
+        )
     }
 
     private fun loadRecyclerView(view: RecyclerView) {
