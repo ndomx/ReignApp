@@ -35,6 +35,10 @@ class FeedRecyclerViewAdapter(
         entries.clear()
         entries.addAll(posts)
 
+        /**
+         * Because the method clears the whole list,
+         * we have to call [notifyDataSetChanged]
+         */
         notifyDataSetChanged()
     }
 
