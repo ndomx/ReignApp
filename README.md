@@ -2,6 +2,8 @@
 A simple post feed made in Android Studio
 
 ## How to build
+> This app was made with `Android Studio Chipmunk | 2021.2.1 Patch 2`
+
 The SDK location is the only thing you need to provide in order to compile this project. You
 can do this by defining a valid SDK location with an ANDROID_HOME environment variable, or by
 following these steps:
