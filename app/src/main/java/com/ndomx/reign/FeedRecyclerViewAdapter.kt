@@ -34,9 +34,10 @@ class FeedRecyclerViewAdapter() : RecyclerView.Adapter<FeedRecyclerViewAdapter.V
     }
 
     fun addPosts(vararg posts: Post) {
-        val oldCount = entries.size
+        entries.clear()
         entries.addAll(posts)
-        notifyItemRangeInserted(oldCount, posts.size)
+
+        notifyDataSetChanged()
     }
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
