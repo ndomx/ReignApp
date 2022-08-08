@@ -5,8 +5,9 @@ import android.util.Log
 import com.android.volley.Request
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
+import com.ndomx.reign.db.FeedDatabase
 import com.ndomx.reign.db.Post
-import java.lang.Exception
+import org.json.JSONObject
 import java.util.*
 
 class Repository(context: Context) {
@@ -25,28 +26,22 @@ class Repository(context: Context) {
         }
     }
 
-    fun downloadData(callback: (List<Post>) -> Unit) {
+    fun updateFeedData(context: Context, callback: (Int) -> Unit) {
         val jsonRequest = JsonObjectRequest(Request.Method.GET, SERVER_URL, null,
             { response ->
                 val hits = response.getJSONArray("hits")
-                var result: List<Post>? = null
-                try {
-                    // todo: handle invalid posts
-                    result = (hits.map { json ->
-                        Post(
-                            id = json.optInt("story_id", -1),
-                            author = json.getString("author"),
-                            createDate = Date(json.getLong("created_at_i") * 1000),
-                            url = json.getString("story_url"),
-                            title = json.getString("story_title")
-                        )
-                    })
-                } catch (e: Exception) {
-                    Log.e(LOG_TAG, "Error $e")
-                    result = null
+                val posts = mutableListOf<Post>()
+                val db = FeedDatabase.db(context)
+
+                hits.forEach { json ->
+                    val post = parsePost(json)
+                    if (post != null) {
+                        posts.add(post)
+                    }
                 }
-                finally {
-                    callback(result ?: emptyList())
+
+                db.insertPost(*posts.toTypedArray()) {
+                    callback(posts.size)
                 }
             },
             { error ->
@@ -55,5 +50,27 @@ class Repository(context: Context) {
         )
 
         queue.add(jsonRequest)
+    }
+
+    private fun parsePost(json: JSONObject): Post? {
+        val postId = json.optInt("story_id", -1)
+        val author = json.getString("author")
+        val createTimestamp = json.optLong("created_at_i", -1) * 1000
+        val url = json.getString("story_url")
+        val title = json.getString("story_title")
+
+        if (postId < 0) return null
+        if (author == "null") return null
+        if (createTimestamp < 0) return null
+        if (url == "null") return null
+        if (title == "null") return null
+
+        return Post(
+            id = postId,
+            author = author,
+            createDate = Date(createTimestamp),
+            url = url,
+            title = title
+        )
     }
 }
