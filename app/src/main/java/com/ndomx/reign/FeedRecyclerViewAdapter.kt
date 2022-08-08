@@ -47,7 +47,16 @@ class FeedRecyclerViewAdapter() : RecyclerView.Adapter<FeedRecyclerViewAdapter.V
 
         init {
             articleContainer.setOnClickListener {
-                listener?.onPostClick(entries[bindingAdapterPosition])
+                listener?.expandPost(entries[bindingAdapterPosition])
+            }
+
+            articleContainer.setOnLongClickListener {
+                val index = bindingAdapterPosition
+                listener?.deletePost(entries[index])
+
+                notifyItemRangeRemoved(index, 1)
+
+                true
             }
         }
 

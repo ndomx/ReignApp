@@ -52,11 +52,18 @@ class FeedFragment() : Fragment(), IPostListener {
         }
     }
 
-    override fun onPostClick(post: Post) {
+    override fun expandPost(post: Post) {
         findNavController().navigate(
             R.id.action_feedFragment_to_postFragment,
             bundleOf(PostFragment.ARG_URL to post.url)
         )
+    }
+
+    override fun deletePost(post: Post) {
+        showSnackbar("Deleting one post")
+
+        val db = context?.let { FeedDatabase.db(it) } ?: return
+        db.markPostAsDeleted(post)
     }
 
     private fun loadRecyclerView(view: RecyclerView) {
