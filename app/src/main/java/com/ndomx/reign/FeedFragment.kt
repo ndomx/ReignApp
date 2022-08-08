@@ -11,8 +11,10 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.google.android.material.snackbar.Snackbar
 import com.ndomx.reign.db.FeedDatabase
 import com.ndomx.reign.db.Post
+import com.ndomx.reign.dummy.generateRandomPosts
 
 class FeedFragment() : Fragment(), IPostListener {
     private val feedAdapter = FeedRecyclerViewAdapter()
@@ -72,15 +74,23 @@ class FeedFragment() : Fragment(), IPostListener {
     private fun onRefresh() {
         Log.i("FeedFragment", "onRefresh called")
         context?.let {
-            Repository.getInstance(it).downloadData { posts ->
-                feedAdapter.addPosts(*posts.toTypedArray())
+            val repo = Repository.getInstance(it)
+            repo.updateFeedData(it) { count ->
+                showSnackbar("Downloaded $count posts")
+
+                val db = FeedDatabase.db(it)
+                db.getAllPosts { posts ->
+                    feedAdapter.addPosts(*posts.toTypedArray())
+                }
+
                 refreshLayout?.isRefreshing = false
             }
         }
     }
 
-    companion object {
-        @JvmStatic
-        fun newInstance() = FeedFragment()
+    private fun showSnackbar(message: String) {
+        refreshLayout?.let {
+            Snackbar.make(it, message, Snackbar.LENGTH_SHORT).show()
+        }
     }
 }
