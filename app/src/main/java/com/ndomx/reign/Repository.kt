@@ -31,11 +31,12 @@ class Repository(context: Context) {
                 val hits = response.getJSONArray("hits")
                 var result: List<Post>? = null
                 try {
+                    // todo: handle invalid posts
                     result = (hits.map { json ->
                         Post(
                             id = json.optInt("story_id", -1),
                             author = json.getString("author"),
-                            createDate = Date(json.getLong("created_at_i")),
+                            createDate = Date(json.getLong("created_at_i") * 1000),
                             url = json.getString("story_url"),
                             title = json.getString("story_title")
                         )
