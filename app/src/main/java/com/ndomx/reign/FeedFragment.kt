@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -59,13 +60,6 @@ class FeedFragment() : Fragment(), IPostListener {
         )
     }
 
-    override fun deletePost(post: Post) {
-        showSnackbar("Deleting one post")
-
-        val db = context?.let { FeedDatabase.db(it) } ?: return
-        db.markPostAsDeleted(post)
-    }
-
     private fun loadRecyclerView(view: RecyclerView) {
         with(view) {
             layoutManager = LinearLayoutManager(context)
@@ -75,6 +69,13 @@ class FeedFragment() : Fragment(), IPostListener {
             db.getAllPosts { posts ->
                 feedAdapter.addPosts(*posts.toTypedArray())
             }
+
+            val swipeListener = SwipeToDeleteCallback(context) { position ->
+                onItemSwipe(position)
+            }
+
+            val itemTouchHelper = ItemTouchHelper(swipeListener)
+            itemTouchHelper.attachToRecyclerView(view)
         }
     }
 
@@ -99,5 +100,14 @@ class FeedFragment() : Fragment(), IPostListener {
         refreshLayout?.let {
             Snackbar.make(it, message, Snackbar.LENGTH_SHORT).show()
         }
+    }
+
+    private fun onItemSwipe(position: Int) {
+        showSnackbar("Removing post at position $position")
+
+        val post = feedAdapter.popItemAt(position)
+
+        val db = context?.let { FeedDatabase.db(it) } ?: return
+        db.markPostAsDeleted(post)
     }
 }

@@ -40,6 +40,15 @@ class FeedRecyclerViewAdapter() : RecyclerView.Adapter<FeedRecyclerViewAdapter.V
         notifyDataSetChanged()
     }
 
+    fun popItemAt(position: Int): Post {
+        val post = entries[position]
+        entries.removeAt(position)
+
+        notifyItemRemoved(position)
+
+        return post
+    }
+
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val articleTitle: TextView = view.findViewById(R.id.feed_article_title)
         val articleInfo: TextView = view.findViewById(R.id.feed_article_info)
@@ -48,15 +57,6 @@ class FeedRecyclerViewAdapter() : RecyclerView.Adapter<FeedRecyclerViewAdapter.V
         init {
             articleContainer.setOnClickListener {
                 listener?.expandPost(entries[bindingAdapterPosition])
-            }
-
-            articleContainer.setOnLongClickListener {
-                val index = bindingAdapterPosition
-                listener?.deletePost(entries[index])
-
-                notifyItemRangeRemoved(index, 1)
-
-                true
             }
         }
 
