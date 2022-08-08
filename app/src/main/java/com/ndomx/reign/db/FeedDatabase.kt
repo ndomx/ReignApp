@@ -16,6 +16,7 @@ import kotlinx.coroutines.runBlocking
 @TypeConverters(Converters::class)
 abstract class FeedDatabase : RoomDatabase() {
     companion object {
+        @Volatile
         private var INSTANCE: FeedDatabase? = null
 
         fun db(context: Context): FeedDatabase {
