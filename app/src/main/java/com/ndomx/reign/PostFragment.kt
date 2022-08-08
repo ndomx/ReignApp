@@ -1,13 +1,17 @@
 package com.ndomx.reign
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.WebView
+import androidx.fragment.app.Fragment
 
 class PostFragment : Fragment() {
+    companion object {
+        const val ARG_URL = "post-fragment-url"
+    }
+
     private var url: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,17 +33,5 @@ class PostFragment : Fragment() {
         }
 
         return view
-    }
-
-    companion object {
-        const val ARG_URL = "post-fragment-url"
-
-        @JvmStatic
-        fun newInstance(url: String) =
-            PostFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_URL, url)
-                }
-            }
     }
 }
