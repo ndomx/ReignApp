@@ -3,6 +3,7 @@ package com.ndomx.reign
 import android.content.Context
 import android.graphics.*
 import android.graphics.drawable.ColorDrawable
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 
@@ -67,6 +68,18 @@ class SwipeToDeleteCallback(
             itemView.bottom
         )
         background.draw(c)
+
+        ContextCompat.getDrawable(context, R.drawable.ic_baseline_delete_outline_24)?.let { drawable ->
+            val iconMargin = (itemHeight - drawable.intrinsicHeight) / 2
+
+            val iconTop = itemView.top + iconMargin
+            val iconRight = itemView.right - iconMargin
+            val iconLeft = iconRight - drawable.intrinsicWidth
+            val iconBottom = iconTop + drawable.intrinsicHeight
+
+            drawable.setBounds(iconLeft, iconTop, iconRight, iconBottom)
+            drawable.draw(c)
+        }
 
         super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
     }
