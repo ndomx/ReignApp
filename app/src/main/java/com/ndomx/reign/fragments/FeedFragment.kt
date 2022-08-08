@@ -17,7 +17,7 @@ import com.ndomx.reign.*
 import com.ndomx.reign.db.FeedDatabase
 import com.ndomx.reign.db.models.Post
 
-class FeedFragment() : Fragment() {
+class FeedFragment : Fragment() {
     private val feedAdapter = FeedRecyclerViewAdapter { post ->
         expandPost(post)
     }
