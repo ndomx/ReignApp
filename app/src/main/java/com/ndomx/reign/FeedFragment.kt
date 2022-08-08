@@ -46,11 +46,6 @@ class FeedFragment() : Fragment(), IPostListener {
 
         // TODO: add listener in constructor
         feedAdapter.attachListener(this)
-
-        val db = context?.let { FeedDatabase.db(it) } ?: return
-        db.getAllPosts {
-            feedAdapter.addPosts(*it.toTypedArray())
-        }
     }
 
     override fun expandPost(post: Post) {
