@@ -5,6 +5,10 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import com.ndomx.reign.db.dao.DeletedPostDao
+import com.ndomx.reign.db.dao.PostDao
+import com.ndomx.reign.db.models.DeletedPost
+import com.ndomx.reign.db.models.Post
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 

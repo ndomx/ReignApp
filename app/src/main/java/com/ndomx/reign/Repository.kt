@@ -6,7 +6,7 @@ import com.android.volley.Request
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.ndomx.reign.db.FeedDatabase
-import com.ndomx.reign.db.Post
+import com.ndomx.reign.db.models.Post
 import org.json.JSONObject
 import java.util.*
 

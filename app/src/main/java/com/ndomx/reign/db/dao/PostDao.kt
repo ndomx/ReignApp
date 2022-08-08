@@ -1,6 +1,7 @@
-package com.ndomx.reign.db
+package com.ndomx.reign.db.dao
 
 import androidx.room.*
+import com.ndomx.reign.db.models.Post
 
 @Dao
 interface PostDao {

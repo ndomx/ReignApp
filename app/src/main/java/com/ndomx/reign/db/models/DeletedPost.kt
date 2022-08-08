@@ -1,4 +1,4 @@
-package com.ndomx.reign.db
+package com.ndomx.reign.db.models
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

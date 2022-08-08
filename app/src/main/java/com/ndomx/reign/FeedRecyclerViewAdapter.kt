@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.ndomx.reign.db.Post
+import com.ndomx.reign.db.models.Post
 
 class FeedRecyclerViewAdapter(
     private val onPostClick: (Post) -> Unit
