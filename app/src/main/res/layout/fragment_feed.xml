@@ -23,4 +23,9 @@
         android:layout_margin="@dimen/text_margin"
         android:textSize="14sp"
         tools:text="Danno - 25m" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/black" />
 </LinearLayout>
