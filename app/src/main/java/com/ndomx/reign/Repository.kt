@@ -59,6 +59,11 @@ class Repository(context: Context) {
         val url = json.getString("story_url")
         val title = json.getString("story_title")
 
+        /**
+         * The backend contains invalid posts that have null properties,
+         * required to either display contents and to properly store them
+         * in the database
+         */
         if (postId < 0) return null
         if (author == "null") return null
         if (createTimestamp < 0) return null
