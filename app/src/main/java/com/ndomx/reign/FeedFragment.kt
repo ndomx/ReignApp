@@ -15,7 +15,6 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.snackbar.Snackbar
 import com.ndomx.reign.db.FeedDatabase
 import com.ndomx.reign.db.Post
-import com.ndomx.reign.dummy.generateRandomPosts
 
 class FeedFragment() : Fragment(), IPostListener {
     private val feedAdapter = FeedRecyclerViewAdapter()
